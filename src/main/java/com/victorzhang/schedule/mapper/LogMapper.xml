@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.victorzhang.schedule.mapper.LogMapper">
+
+	<!-- 加入日志-->
+	<insert id="addLog" parameterType="java.util.Map">
+		insert into log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">
+				logid,
+			</if>
+			<if test="loglx != null and loglx != ''">
+				loglx,
+			</if>
+			<if test="logms != null and logms != ''">
+				logms,
+			</if>
+			<if test="userid != null and userid != ''">
+				userid,
+			</if>
+			<if test="userdate != null and userdate != ''">
+				userdate,
+			</if>
+			<if test="userip != null and userip != ''">
+				userip,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logid != null and logid != ''">
+				#{logid},
+			</if>
+			<if test="loglx != null and loglx != ''">
+				#{loglx},
+			</if>
+			<if test="logms != null and logms != ''">
+				#{logms},
+			</if>
+			<if test="userid != null and userid != ''">
+				#{userid},
+			</if>
+			<if test="userdate != null and userdate != ''">
+				#{userdate},
+			</if>
+			<if test="userip != null and userip != ''">
+				#{userip},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 日志总数 -->
+	<select id="queryCount" resultType="int" parameterType="java.util.Map">
+		select count(logid) from log l  
+		left join users u 
+		on l.userid = u.userid
+		<where>
+			1=1
+			<if test="loglx != null and loglx != ''">
+					and l.loglx = #{loglx}
+			</if>
+			<if test="userid != null and userid != ''">
+					and l.userid = #{userid}
+			</if>
+			<if test="stadate != null and stadate != ''">
+					and l.userdate >= #{stadate}
+			</if>
+			<if test="enddate != null and enddate != ''">
+					and #{enddate} >= l.userdate
+			</if>
+		</where>
+	</select>
+	
+	<!-- 日志记录 -->
+	<select id="querylogpage" resultType="java.util.Map" parameterType="java.util.Map">
+		select DATE_FORMAT(l.userdate,'%Y-%m-%d %H:%k:%s') as userdate,l.loglx,l.logms,l.userip,u.username from log l 
+		left join users u on
+		l.userid = u.userid
+		<where>
+			1=1
+			<if test="loglx != null and loglx != ''">
+					and l.loglx = #{loglx}
+			</if>
+			<if test="userid != null and userid != ''">
+					and l.userid = #{userid}
+			</if>
+			<if test="stadate != null and stadate != ''">
+					and l.userdate >= #{stadate}
+			</if>
+			<if test="enddate != null and enddate != ''">
+					and #{enddate} >= l.userdate
+			</if>
+		</where>
+		order by l.userdate limit ${begin},${pageSize}
+	</select>
+	
+</mapper>

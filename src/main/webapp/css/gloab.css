@@ -1,0 +1,7 @@
+#trs tr{height: 33px;}
+.controls-row>input,select{margin-bottom: 0px;}
+#querytype,#querystadate,#queryenddate,#query{margin-left:0px;}
+
+.table {table-layout: fixed;font-size: 14px;}
+.table td {text-align: center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.odd {background-color: #eeeeee;}

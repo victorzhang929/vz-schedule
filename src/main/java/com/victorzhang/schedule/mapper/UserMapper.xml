@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.victorzhang.schedule.mapper.UserMapper">
+
+	<!-- 原始密码输入是否正确 -->
+	<select id="queryExistPassword" resultType="boolean"
+		parameterType="java.util.Map">
+		select count(userid) from users
+		where userid = #{userid}
+		and password = #{oldpassword}
+	</select>
+
+	<!-- 根据map查找数据库users表是否存在该数据 -->
+	<update id="doChangePassword" parameterType="java.util.Map">
+		update users set
+		password = #{password}
+		where userid = #{userid}
+	</update>
+
+	<!-- 根据userid获取user对象 -->
+	<select id="getUserInfo" resultType="java.util.Map"
+		parameterType="java.lang.String">
+		SELECT
+		u.username,u.realname,u.useridcard,u.usermobile,u.usermail,ui.username AS inputusername,
+		u.inputdate,u.inputip,uu.username AS updateusername,u.updateip,u.updatedate,r.rolename,d.dname,c.cname
+		FROM users u
+		LEFT JOIN role r
+		ON r.roleid = u.roleid
+		LEFT JOIN department d
+		ON d.departid = u.departid
+		LEFT JOIN classes c
+		ON c.classid = u.classid
+		LEFT JOIN users ui
+		ON u.inputuserid = ui.userid
+		LEFT JOIN users uu
+		ON u.updateuserid = uu.userid
+		where u.userid = #{userid}
+	</select>
+</mapper>
