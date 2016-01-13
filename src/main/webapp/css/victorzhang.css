@@ -1,0 +1,577 @@
+a{text-decoration:none}
+
+#sidebar ul>li {
+	border-bottom: 1px solid #f3f3f3;
+	border-top: 0px;
+}
+
+.submenu .open>ul>li.active {
+	background-color: #f5f5f5;
+}
+
+.table td {
+	text-align: center;
+}
+
+.btn-group>.btn.active {
+	background-color: #37aae4;
+	color: #ffffff;
+}
+
+
+
+#sidebar ul>li {
+	border-bottom: 1px solid #f3f3f3;
+	border-top: 0px;
+}
+
+.table {
+	table-layout: fixed;
+}
+
+.table td {
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+table td input {
+	margin: 0;
+}
+
+.btn-group>.btn.active {
+	background-color: #37aae4;
+	color: #ffffff;
+}
+
+.p_pageSelectClass {
+	width: 5%;
+	display: inline;
+	float: left;
+}
+
+.p_countMsgClass {
+	width: 10%;
+	display: inline;
+}
+
+.p_pageClass {
+	width: 46%;
+	display: inline;
+	float: right;
+	margin-right: -5px;
+}
+
+.odd { /* background: #F8F8FF; */
+	/* background-color: #d1faea; */
+	background-color: #eeeeee;
+}
+
+.selected {
+	background: #E6E6FA;
+}
+
+.hover {
+	background: #F0F0F0;
+}
+
+.shou {
+	cursor: pointer;
+}
+
+thead tr{height: 35px;}
+#trs tr{height: 33px;}
+
+/* 锟皆讹拷锟斤拷button */
+.bt {
+	font-weight: 300;
+	margin: 0px 4px 0px 4px;
+	transition: all 0.15s ease 0s;
+	-moz-user-select: none;
+	cursor: pointer;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	font-family: inherit;
+	text-transform: none;
+}
+
+.btlarge {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none
+}
+
+.bt-xs {
+	padding: 1px 5px;
+	border-radius: 3px;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.bt-info {
+	border: 1px solid #5bc0de;
+	color: #5bc0de;
+	background: transparent none repeat scroll 0 0;
+}
+
+.bt-info:hover {
+	background: #5bc0de none repeat scroll 00;
+	color: white;
+}
+
+.bt-default {
+	border: 1px solid #bbbbbb;
+	color: #999999;
+	background: transparent none repeat scroll 0 0;
+}
+
+.bt-default:hover {
+	background: #bbbbbb none repeat scroll 00;
+	color: white;
+}
+
+.bt-primary {
+	border: 1px solid #007aff;
+	color: #007aff;
+	background: transparent none repeat scroll 0 0;
+}
+
+.bt-primary:hover {
+	background: #007aff none repeat scroll 00;
+	color: white;
+}
+
+.bt-success {
+	border: 1px solid #60c560;
+	color: #60c560;
+	background: transparent none repeat scroll 0 0;
+}
+
+.bt-success:hover {
+	background: #60c560 none repeat scroll 00;
+	color: white;
+}
+
+.bt-caution {
+	border: 1px solid #f0ad4e;
+	color: #f0ad4e;
+}
+
+.bt-caution:hover {
+	background: #f0ad4e none repeat scroll 00;
+	color: white;
+}
+
+.bt-danger {
+	border: 1px solid #d9534f;
+	color: #d9534f;
+}
+
+.bt-danger:hover {
+	background: #d9534f none repeat scroll 00;
+	color: white;
+}
+
+.bt-default-bg {
+	border: 1px solid #003366;
+	color: white;
+	background: #003366 none repeat scroll 0 0;
+}
+
+.bt-default-bg:hover {
+	border-color: #003366;
+	background: transparent none repeat scroll 0 0;
+	color: #003366;
+}
+
+.bt-success-bg {
+	border: 1px solid #60c560;
+	color: white;
+	background: #60c560 none repeat scroll 0 0;
+}
+
+.bt-success-bg:hover {
+	background: transparent none repeat scroll 0 0;
+	border-color: #60c560;
+	color: #60c560;
+}
+
+.bt-info-bg {
+	border: 1px solid #46b8da;
+	color: white;
+	background: #5bc0de none repeat scroll 0 0;
+}
+
+.bt-info-bg:hover {
+	background: transparent none repeat scroll 0 0;
+	border-color: #46b8da;
+	color: #46b8da;
+}
+
+.bt-primary-bg {
+	border: 1px solid #007aff;
+	color: white;
+	background: #007aff none repeat scroll 0 0;
+	margin:0 5px;
+}
+
+.bt-primary-bg:hover {
+	background: transparent none repeat scroll 0 0;
+	border-color: #007aff;
+	color: #007aff;
+}
+
+.bt-caution-bg {
+	border: 1px solid #eea236;
+	color: white;
+	background: #f0ad4e none repeat scroll 0 0;
+}
+
+.bt-caution-bg:hover {
+	background: transparent none repeat scroll 0 0;
+	border-color: #f0ad4e;
+	color: #f0ad4e;
+}
+
+.bt-danger-bg {
+	border: 1px solid #d43f3a;
+	color: white;
+	background: #d9534f none repeat scroll 0 0;
+}
+
+.bt-danger-bg:hover {
+	background: transparent none repeat scroll 0 0;
+	border-color: #d9534f;
+	color: #d9534f;
+}
+
+/**锟皆讹拷锟斤拷input**/
+.psbInput {
+	min-height: 25px !important;
+	height: 30px !important;
+	line-height: 25px !important;
+	margin:1px !important;
+}
+
+/**锟皆讹拷锟斤拷select**/
+.psbSelect{
+	font-size: 14px;
+    height: 30px;
+    width: 91.4894%;
+    /* margin-top:7px; */
+}
+
+/**label锟斤拷签锟斤拷式**/
+.psblabel{
+		border-radius: 0;
+	    display: inline-block;
+	    font-size: 85%;
+	    font-weight: 300;
+	    line-height: 1.4;
+	    margin: 0 8px;
+	    color: #fff;
+	    padding: 0.2em 0.6em 0.3em;
+	    text-align: center;
+	    vertical-align: baseline;
+	    white-space: nowrap;
+	}
+	
+	.psblabel-default{
+		 background-color: #999;
+	}
+	
+	.psblabel-primary {
+    	background-color: #007aff;
+	}
+	
+	.psblabel-success {
+    	background-color: #60c560;
+	}
+	
+	.psblabel-warning {
+    	background-color: #f0ad4e;
+	}
+	
+	.psblabel-danger {
+    	background-color:#d9534f;
+	}
+	
+	.psblabel-info {
+    	background-color: #5bc0de;
+	}
+	
+/**labels锟斤拷签锟斤拷式锟斤拷**/
+	.psblabel2{
+		margin: 0 10px 10px 0;
+		/* background-color: #ccc !important; */
+		background-clip: padding-box !important;
+	    border-radius: 2px !important;
+	    font-size: 12px;
+	    padding: 4px 6px;
+	    display: inline-block;
+    	font-weight: 300;
+    	text-shadow: none !important;
+    	border-radius: 0.25em;
+    	text-align: center;
+	    vertical-align: baseline;
+	    white-space: nowrap;
+	    box-sizing: border-box;
+	    color: #fff;
+	}
+	
+	.psblabel2-default {
+    	background-color: #ccc;
+	}
+	.psblabel2-primary {
+    	background-color: #428bca;
+	}
+	.psblabel2-info {
+    	background-color: #5bc0de;
+	}
+	.psblabel2-success {
+		background-color: #53a93f;
+		background-image: none !important;
+	}
+	
+	.psblabel2-danger {
+		background-color: #d73d32;
+		background-image: none !important;
+	}
+	
+	.psblabel2-warning {
+		background-color: #f4b400;
+		background-image: none !important;
+	}
+	
+	.psblabel2-sky {
+		background-color: #11a9cc;
+		background-image: none !important;
+	}
+	
+	.psblabel2-blueberry {
+		background-color: #6f85bf;
+		background-image: none !important;
+	}
+	
+	.psblabel2-yellow {
+		background-color: #ffce55;
+		background-image: none !important;
+	}
+	
+	.psblabel2-darkorange {
+		background-color: #ed4e2a;
+		background-image: none !important;
+	}
+	
+	.psblabel2-magenta {
+		background-color: #bc5679;
+		background-image: none !important;
+	}
+	
+	.psblabel2-purple {
+		background-color: #7e3794;
+		background-image: none !important;
+	}
+	
+	.psblabel2-maroon {
+		background-color: #981b48;
+		background-image: none !important;
+	}
+	
+	.psblabel2-darkpink {
+		background-color: #cc324b;
+		background-image: none !important;
+	}
+	
+	.psblabel2-pink {
+		background-color: #e75b8d;
+		background-image: none !important;
+	}
+	
+	.psblabel2-azure {
+		background-color: #2dc3e8;
+		background-image: none !important;
+	}
+	
+	.psblabel2-orange {
+		background-color: #fb6e52;
+		background-image: none !important;
+	}
+	
+	/**labels锟斤拷式锟斤拷**/
+	.psblabel2-default-old {
+    	background: rgba(0, 0, 0, 0) linear-gradient(to right, #ccc, #e5e5e5) repeat scroll 0 0 !important;
+	}
+	.psblabel2-primary-old {
+    	background: rgba(0, 0, 0, 0) linear-gradient(to right, #4374e0, #aec9fa) repeat scroll 0 0 !important;
+	}
+	.psblabel2-info-old {
+    	background: rgba(0, 0, 0, 0) linear-gradient(to right, #57b5e3, #c4e6f6) repeat scroll 0 0 !important;
+	}
+	.psblabel2-success-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #53a93f, #b0e0a4) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-danger-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #d73d32, #f7b5b0) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-warning-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #f4b400, #f8df95) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-sky-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #11a9cc, #c4e6f6) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-blueberry-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #6f85bf, #ced5e9) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-yellow-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #ffce55, #f6d52e) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-darkorange-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #ed4e2a, #f5a998) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-magenta-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #bc5679, #e9abc0) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-purple-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #7e3794, #daafe8) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-maroon-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #981b48, #eab6c9) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-darkpink-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #cc324b, #fb6880) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-pink-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #e75b8d, #f299b9) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-azure-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #2dc3e8, #5edfff) repeat scroll 0 0 !important;
+	}
+	
+	.psblabel2-orange-old {
+		background: rgba(0, 0, 0, 0) linear-gradient(to right, #fb6e52, #fb9f8d) repeat scroll 0 0 !important;
+	}
+	
+/* 锟斤拷锟斤拷丶锟斤拷锟绞�*/
+.dt{
+	width: 95px;
+}
+
+/**file锟截硷拷锟斤拷锟斤拷**/
+	.upload1{position:relative;width:260px;height:30px;}
+	.ipt_text{width:174px;height:24px;line-height:24px;padding:2px;border:1px solid #aaa;vertical-align: middle;}
+	.filebtn{width:70px;height:30px;line-height:30px;border:1px solid #aaa;vertical-align: middle;}
+	.upload_file1{position:absolute;left:0;top:0;width:260px;height:30px;line-height:30px;opacity:0;filter:alpha(opacity:0);}=======
+
+
+/* 锟�锟斤拷证锟斤拷锟斤拷时input锟斤拷锟斤拷式 */
+.nnE {
+	border-color: red;
+}
+
+/* 锟�锟斤拷证锟斤拷确时input锟斤拷锟斤拷式 */
+.nnS {
+	border-color: green;
+}
+
+.yc{
+	display: none;
+}
+
+
+/****/
+h1.row-title::before, h2.row-title::before, h3.row-title::before, h4.row-title::before, h5.row-title::before, h6.row-title::before {
+    background-color: #2dc3e8;
+    bottom: 0;
+    content: "";
+    display: block;
+    left: -4px;
+    max-width: 4px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 4px;
+}
+.before-darkorange::before {
+    background-color: #ed4e2a !important;
+}
+.before-blue::before {
+    background-color: #27a9e3 !important;
+}
+.before-green::before {
+    background-color: #60c560 !important;
+}
+.before-orange::before {
+    background-color: #ffb848 !important;
+}
+.before-darkblue::before {
+    background-color: #2255a4 !important;
+}
+.before-pink::before {
+    background-color: #f74d4d !important;
+}
+
+.before-blue2::before {
+    background-color: #2dc3e8 !important;
+}
+.before-purple::before {
+    background-color: #6f85bf !important;
+}
+.before-lc::before {
+    background-color: #bc5679 !important;
+}
+*::before, *::after {
+    box-sizing: border-box;
+}
+*::before, *::after {
+    box-sizing: border-box;
+}
+h1.row-title, h2.row-title, h3.row-title, h4.row-title, h5.row-title, h6.row-title {
+    background-clip: padding-box;
+    background-color: #fff;
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    color: #646464;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 17px;
+    margin: 10px 0;
+    padding: 9px 10px 9px 8px;
+    position: relative;
+}
+h6 {
+    font-size: 13px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Open Sans","Segoe UI";
+    font-weight: 300 !important;
+}
