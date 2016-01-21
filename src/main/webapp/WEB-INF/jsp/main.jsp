@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE>
 <html>
 <head>
@@ -6,7 +7,6 @@
 	<title>课表安排系统</title>
 	<script src="<%=basePath%>js/jCookie.js"></script>
 	<script src="<%=basePath%>js/main.js"></script>
-	<link rel="stylesheet" href="<%=basePath%>css/main.css" />
 </head>
 
 <body>
@@ -65,10 +65,16 @@
     			</a>
     			<ul id="ul2">
 	        		<li><a href="javascript:void(0);" id="userInfoUI" onclick="clickNavMenu(this.id,'<%=basePath%>user/userInfoUI.do')">用户信息</a></li>
-	        		<li><a href="javascript:void(0);">部门信息</a></li>
-	        		<li><a href="javascript:void(0);">班级信息</a></li>
-	        		<li><a href="javascript:void(0);">教师信息</a></li>
-	        		<li><a href="javascript:void(0);">学生信息</a></li>
+	        		<!-- 系统管理员，部门管理员权限 -->
+	        		<c:if test="${ sessionScope.roleid =='1'|| sessionScope.roleid =='2'}">
+	        			<!-- 系统管理员权限 -->
+	        			<c:if test="${ sessionScope.roleid =='1'}">
+		        			<li><a href="javascript:void(0);" id="departInfoUI" onclick="clickNavMenu(this.id,'<%=basePath%>depart/departInfoUI.do')">部门信息</a></li>
+	        			</c:if>
+		        		<li><a href="javascript:void(0);" id="classesInfoUI" onclick="clickNavMenu(this.id,'<%=basePath%>classes/classesInfoUI.do')">班级信息</a></li>
+		        		<li><a href="javascript:void(0);" id="teacherInfoUI" onclick="clickNavMenu(this.id,'<%=basePath%>user/teacherInfoUI.do')">教师信息</a></li>
+		        		<li><a href="javascript:void(0);" id="studentInfoUI" onclick="clickNavMenu(this.id,'<%=basePath%>user/studentInfoUI.do')">学生信息</a></li>
+	        		</c:if>
 	    		</ul> 
     		</li>
     		<li class="submenu"> 
@@ -77,8 +83,11 @@
     				<i class="icon-chevron-right"></i>
     			</a>
     			<ul id="ul2">
+    				<!-- 系统管理员权限 -->
+        			<c:if test="${ sessionScope.roleid =='1'}">
+	        			<li><a href="javascript:void(0);">发布公告</a></li>
+        			</c:if>
 	        		<li><a href="javascript:void(0);">公告栏</a></li>
-	        		<li><a href="javascript:void(0);">信息箱</a></li>
 	    		</ul> 
     		</li>
     		<li class="submenu"> 
@@ -87,16 +96,21 @@
     				<i class="icon-chevron-right"></i>
     			</a>
     			<ul id="ul2">
-	        		<li><a href="javascript:void(0);">用户日志</a></li>
-	        		<li><a href="javascript:void(0);">部门日志</a></li>
-	        		<li><a href="javascript:void(0);">系统日志</a></li>
+        			<!-- 部门管理员权限 - -->
+        			<c:if test="${ sessionScope.roleid =='2'}">
+	        			<li><a href="javascript:void(0);" id="departlogUI" onclick="clickNavMenu(this.id,'<%=basePath%>log/departlogUI.do')">部门日志</a></li>
+        			</c:if>
+	        		<!-- 系统管理员-->
+        			<c:if test="${ sessionScope.roleid =='1'}">
+	        			<li><a href="javascript:void(0);" id="syslogUI" onclick="clickNavMenu(this.id,'<%=basePath%>log/syslogUI.do')">系统日志</a></li>
+        			</c:if>
 	    		</ul> 
     		</li>
   		</ul>
 	</div>
 	
 	<div id="content">
-		<iframe id="iframepage" onload="setFrameHeight(this.id)" marginheight="0" marginwidth="0"
+		<iframe id="iframepage" marginheight="0" marginwidth="0"
 			frameborder="0" scrolling="auto" height="100%" width="100%" src="<%=basePath%>index/graphicLinkUI.do"></iframe>
 	</div>
 	

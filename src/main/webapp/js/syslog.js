@@ -1,7 +1,8 @@
 $(function(){
 	tableDivPage();//生成分页信息div(必须)
 	p_pageSelect();//页码
-	queryAllLogLx('querytype','3');//初始化日志类型
+	queryAllLogLx('querytype','1');//初始化日志类型
+	queryAllDepartment('querydepart');//初始化所有学院
 	load();//读取数据
 });
 
@@ -15,10 +16,11 @@ function load(pge){
 	
 	// 搜索字段
 	param.loglx = $("#querytype").val();
+	param.dname = $("#querydepart").val();
 	param.stadate = $("#querystadate").val();
 	param.enddate = $("#queryenddate").val();
 	//系统日志1，部门日志2，用户为3
-	param.roleType = 3;
+	param.roleType = "1";
 	
 	$.ajax({
         url: path+"/log/querylogpage.do",
@@ -48,7 +50,7 @@ function load(pge){
 					+ "</tr>";
 			}
 		} else {
-			mainTable += "<tr><td colspan='5' style='height:40px;font-size:14px;font-size:16px;font-weight: 700;'>暂无数据!</td></tr>";
+			mainTable += "<tr><td colspan='5'>暂无数据!</td></tr>";
 		}
 		
 		mainTable += "</tbody></table>";

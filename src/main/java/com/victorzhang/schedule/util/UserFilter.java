@@ -28,6 +28,7 @@ public class UserFilter implements Filter {
 
 		HttpSession session = req.getSession(true);
 
+		//用户id和权限登录表示
 		if (session.getAttribute("userid") == null || session.getAttribute("roleid") == null) {
 			res.sendRedirect("/Schedule_victor/");
 		} else

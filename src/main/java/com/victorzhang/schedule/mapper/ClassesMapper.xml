@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.victorzhang.schedule.mapper.ClassesMapper">
+
+	<!-- 班级总数 -->
+	<select id="queryCount" resultType="int" parameterType="java.util.Map">
+		SELECT count(c.classid) FROM classes c
+		LEFT JOIN department d
+		ON d.departid = c.departid
+		<where>
+			<if test="cname != null and cname != ''">
+				AND c.cname LIKE CONCAT('%',#{cname},'%')  
+			</if>
+			<if test="dname != null and dname != ''">
+				AND d.dname = #{dname}
+			</if>
+		</where>
+	</select>
+
+	<!-- 班级总记录 -->
+	<select id="queryClassesInfos" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT c.classid,c.cname,d.dname,(SELECT COUNT(u.userid) FROM users u
+			<where>
+				u.roleid = '3' AND u.classid = c.classid
+			</where>
+		) AS teaNum,(SELECT COUNT(u.userid) FROM users u
+			<where>
+				u.roleid = '4' AND u.classid = c.classid
+			</where>
+		) AS stuNum
+		FROM classes c
+		LEFT JOIN department d
+		ON d.departid = c.departid
+		<where>
+			<if test="cname != null and cname != ''">
+				AND c.cname LIKE CONCAT('%',#{cname},'%') 
+			</if>
+			<if test="dname != null and dname != ''">
+				AND d.dname = #{dname}
+			</if>
+		</where>
+		ORDER BY d.departid,d.ddate DESC limit ${begin},${pageSize}
+	</select>
+	
+	<!-- 根据classid获取当前班级信息 -->
+	<select id="getClassesInfo" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT c.classid,c.cname,d.dname
+		FROM classes c
+		LEFT JOIN department d
+		ON d.departid = c.departid
+		WHERE c.classid = #{classid}
+	</select>
+	
+	<!-- 根据学院名称获取学院id -->
+	<select id="getDepartidByDname" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT departid
+		FROM department
+		WHERE dname = #{dname}
+	</select>
+	
+	<!-- 更新班级表信息 -->
+	<update id="doUpdateClasses" parameterType="java.util.Map">
+		UPDATE classes SET
+		cname = #{cname},departid=#{departid}
+		WHERE classid = #{classid}
+	</update>
+	
+	<!-- 更新用户表信息 -->
+	<update id="doUpdateUsers" parameterType="java.util.Map">
+		UPDATE users SET
+		departid=#{departid}
+		WHERE classid = #{classid}
+	</update>
+	
+	<!-- 删除班级信息及该班级下学生，教师信息 -->
+	<delete id="deleteClass" parameterType="java.lang.String">
+		Delete classes,users FROM classes
+		LEFT JOIN users
+		ON classes.classid = users.classid
+		where classes.classid = #{classid}
+	</delete>
+	
+	<!-- 添加班级(系统管理员权限) -->
+	<insert id="addClasses" parameterType="java.util.Map">
+		insert into classes 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="classid != null and classid != ''">
+				classid,
+			</if>
+			<if test="cname != null and cname != ''">
+				cname,
+			</if>
+			<if test="dphone != null and dphone != ''">
+				dphone,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="classid != null and classid != ''">
+				#{classid},
+			</if>
+			<if test="cname != null and cname != ''">
+				#{cname},
+			</if>
+			<if test="dname != null and dname != ''">
+				#{dname},
+			</if>
+		</trim>
+	</insert>
+	
+	<!--根据部门名称，查询所有班级名称 -->
+	<select id="queryAllClassesByDname" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT c.cname FROM classes c
+		LEFT JOIN department d
+		ON d.departid = c.departid
+		WHERE d.dname = #{dname}
+	</select>
+	
+</mapper>

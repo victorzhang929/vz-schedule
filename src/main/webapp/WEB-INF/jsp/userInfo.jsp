@@ -17,7 +17,7 @@
 		<div id="content-header">
 			<div id="breadcrumb">
 				<a href="javascript:void(0);" title="个人中心" class="tip-bottom"> <i class="icon-cogs"></i> 个人中心
-				</a> <a href="javascript:void(0);" title="用户信息" class="tip-bottom"> 用户信息 </a>
+				</a> <a href="javascript:void(0);" title="用户信息" class="tip-right"> 用户信息 </a>
 			</div>
 		</div>
 

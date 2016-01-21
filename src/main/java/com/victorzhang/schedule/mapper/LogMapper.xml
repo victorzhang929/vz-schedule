@@ -18,6 +18,9 @@
 			<if test="userid != null and userid != ''">
 				userid,
 			</if>
+			<if test="departid != null and departid != ''">
+				departid,
+			</if>
 			<if test="userdate != null and userdate != ''">
 				userdate,
 			</if>
@@ -38,6 +41,9 @@
 			<if test="userid != null and userid != ''">
 				#{userid},
 			</if>
+			<if test="departid != null and departid != ''">
+				#{departid},
+			</if>
 			<if test="userdate != null and userdate != ''">
 				#{userdate},
 			</if>
@@ -49,16 +55,23 @@
 	
 	<!-- 日志总数 -->
 	<select id="queryCount" resultType="int" parameterType="java.util.Map">
-		select count(logid) from log l  
-		left join users u 
-		on l.userid = u.userid
+		SELECT COUNT(logid) FROM log l  
+		LEFT JOIN users u 
+		ON l.userid = u.userid
+		LEFT JOIN department d 
+		ON l.departid = d.departid
 		<where>
-			1=1
 			<if test="loglx != null and loglx != ''">
 					and l.loglx = #{loglx}
 			</if>
 			<if test="userid != null and userid != ''">
 					and l.userid = #{userid}
+			</if>
+			<if test="dname != null and dname != ''">
+					and d.dname = #{dname}
+			</if>
+			<if test="departid != null and departid != ''">
+					and l.departid = #{departid}
 			</if>
 			<if test="stadate != null and stadate != ''">
 					and l.userdate >= #{stadate}
@@ -75,7 +88,6 @@
 		left join users u on
 		l.userid = u.userid
 		<where>
-			1=1
 			<if test="loglx != null and loglx != ''">
 					and l.loglx = #{loglx}
 			</if>
@@ -90,6 +102,19 @@
 			</if>
 		</where>
 		order by l.userdate limit ${begin},${pageSize}
+	</select>
+	
+	<!-- 查看当前用户所有日志类型 -->
+	<select id="queryAllLogLx" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT DISTINCT(loglx) FROM log
+		<where>
+			<if test="userid != null and userid != ''">
+					and userid = #{userid}
+			</if>
+			<if test="departid != null and departid != ''">
+					and departid = #{departid}
+			</if>
+		</where>
 	</select>
 	
 </mapper>

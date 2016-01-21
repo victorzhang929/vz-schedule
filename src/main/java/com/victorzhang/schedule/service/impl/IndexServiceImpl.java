@@ -88,6 +88,7 @@ public class IndexServiceImpl implements IndexService {
 				EmailUtils.sendResetPasswordEmail(user);
 				result.put("sendMailMsg", "您的申请已提交，请查收您的"+user.getUsermail()+"邮箱");
 				log.info(email + ":重设密码链接已发送至邮箱");
+				logService.addLog("找回密码",email+"用户找回密码");
 				return result;
 			}
 			log.warn(email + "不存在");

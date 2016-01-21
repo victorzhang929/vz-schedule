@@ -1,6 +1,7 @@
 package com.victorzhang.schedule.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +47,10 @@ public class LogServiceImpl implements LogService {
 		info.put("loglx", lx);
 		info.put("logms", ms);
 		info.put("userid", userid);
+		//获取部门id用于记录部门日志，系统管理员部门为空
+		if(session.getAttribute("departid")!=null){
+			info.put("departid", session.getAttribute("departid"));
+		}
 		info.put("userdate", dt);
 		info.put("userip", ip);
 		
@@ -53,24 +58,24 @@ public class LogServiceImpl implements LogService {
 	}
 
 	@Override
-	public Map<String, Object> querylogpage(HttpServletRequest request, String _page, String _pageSize, String loglx, String stadate, String enddate, String isuserslog) {
+	public Map<String, Object> querylogpage(HttpServletRequest request, String _page, String _pageSize, String loglx, String dname, String stadate, String enddate, String roleType) {
 		int page = CommonUtils.paraPage(_page);
 		int pageSize = CommonUtils.paraPageSize(_pageSize);
 		
 		Map<String,Object> param = new HashMap<>();
 		
-		if(StringUtils.equals(loglx, "操作类型")){
-			loglx = null;
+		if(!StringUtils.equals(loglx, "操作类型")){
+			param.put("loglx", loglx);
 		}
-		param.put("loglx", loglx);
 		
-		if(StringUtils.equals(isuserslog, "1")){
-			//当前用户日志
+		if(StringUtils.equals(roleType, "1")&&!StringUtils.equals(dname, "所属学院")){//系统日志,按部门查询，系统管理员权限
+			param.put("dname", dname);
+		}else if(StringUtils.equals(roleType, "2")){//部门日志，部门管理员权限
+			String departid = CommonUtils.sesAttr(request, "departid");
+			param.put("departid", departid);
+		}else{//用户日志
 			String userid = CommonUtils.sesAttr(request, "userid");
 			param.put("userid", userid);
-		}else{
-			//TODO
-			//系统管理员，系统全部日志(按部门查看)
 		}
 		
 		if(StringUtils.isNotEmpty(stadate)){
@@ -95,6 +100,19 @@ public class LogServiceImpl implements LogService {
 			result.put("data", "");
 		}
 		return result;
+	}
+
+	@Override
+	public List<Map<String, Object>> queryAllLogLx(HttpServletRequest request,String roleType) {
+		Map<String,Object> param = new HashMap<String,Object>();
+		if(StringUtils.equals(roleType, "2")){//部门日志，部门管理员权限
+			String departid = CommonUtils.sesAttr(request, "departid");
+			param.put("departid", departid);
+		}else if(StringUtils.equals(roleType, "3")){//用户日志
+			String userid = CommonUtils.sesAttr(request, "userid");
+			param.put("userid", userid);
+		}
+		return logMapper.queryAllLogLx(param);
 	}
 
 }

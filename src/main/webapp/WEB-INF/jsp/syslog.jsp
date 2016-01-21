@@ -5,8 +5,8 @@
 <head>
 <%@ include file="include/head.jsp"%>
 <link rel="stylesheet" href="<%=basePath%>css/subiframepage.css"/>
-<script type="text/javascript" src="<%=basePath%>js/userslog.js"></script>
-<title>用户日志</title>
+<script type="text/javascript" src="<%=basePath%>js/syslog.js"></script>
+<title>系统日志</title>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 	<div id="content-header">
 		<div id="breadcrumb">
 			<a href="javascript:void(0);" title="日志中心" class="tip-bottom"> <i class="icon-cogs"></i> 日志中心
-			</a> <a href="javascript:void(0);" title="用户日志" class="tip-right"> 用户日志 </a>
+			</a> <a href="javascript:void(0);" title="系统日志" class="tip-right"> 系统日志 </a>
 		</div>
 	</div>
 
@@ -28,6 +28,8 @@
 					<div class="widget-content nopadding">
 						<div class="controls controls-row">
 							<select id="querytype" class="span2 m-wrap select2-container select2-container-active select2-dropdown-open">
+							</select>
+							<select id="querydepart" class="span2 m-wrap select2-container select2-container-active select2-dropdown-open">
 							</select>
 							<input type="text" id="querystadate" class="span2 m-wrap" placeholder="开始日期" onfocus="WdatePicker({maxDate:'#F{$dp.$D(\'queryenddate\')||\'2099-12-31\'}'})" >
 							<input type="text" id="queryenddate" class="span2 m-wrap" placeholder="结束日期" onfocus="WdatePicker({minDate:'#F{$dp.$D(\'querystadate\')}',maxDate:'2099-12-31'})" >

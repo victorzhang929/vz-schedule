@@ -1,5 +1,6 @@
 package com.victorzhang.schedule.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +27,16 @@ public interface LogService {
 	 * @param loglx
 	 * @param stadate
 	 * @param enddate
-	 * @param isuserslog
+	 * @param roleType
 	 * @return
 	 */
-	Map<String, Object> querylogpage(HttpServletRequest request, String _page, String _pageSize, String loglx, String stadate, String enddate, String isuserslog);
+	Map<String, Object> querylogpage(HttpServletRequest request, String _page, String _pageSize, String loglx,String dname, String stadate, String enddate, String roleType);
+
+	/**
+	 * 查看当前用户所有日志类型
+	 * @param request
+	 * @return
+	 */
+	List<Map<String, Object>> queryAllLogLx(HttpServletRequest request, String roleType);
 
 }

@@ -33,4 +33,51 @@ public interface UserService {
 	 */
 	Map<String, Object> doSaveUserInfo(HttpServletRequest request, String username, String realname, String usermobile, String useridcard, String usermail);
 
+	/**
+	 * 学生，教师信息表
+	 * @param _page
+	 * @param _pageSize
+	 * @param dname
+	 * @param cname
+	 * @return
+	 */
+	Map<String, Object> getUserInfos(String _page, String _pageSize, String dname, String cname,String roleid);
+
+	/**
+	 * 根据userid获取学生，教师信息
+	 * @param userid
+	 * @return
+	 */
+	Map<String, Object> getUserInfoByUserid(String userid);
+
+	/**
+	 * 保存学生，教师信息
+	 * @param userid
+	 * @param dname
+	 * @param cname
+	 * @param realname
+	 * @return
+	 */
+	Map<String, Object> doUpdateStuTeaInfo(String userid, String dname, String cname, String realname);
+
+	/**
+	 * 根据userid删除该用户
+	 * @param userid
+	 * @return
+	 */
+	Map<String, Object> deleteUserInfo(String userid);
+
+	/**
+	 * 添加用户
+	 * @param request
+	 * @param dname
+	 * @param cname
+	 * @param username
+	 * @param realname
+	 * @param usermobile
+	 * @param usermail
+	 * @return
+	 */
+	Map<String, Object> addUserInfo(HttpServletRequest request,String roleid, String dname, String cname, String username, String realname, String usermobile, String usermail);
+
 }

@@ -37,6 +37,9 @@ function changePasswordUI(){
  * 修改密码
  */
 function changePassword(){
+	//清空验证信息
+	$("#msg").html("");
+	
 	//前台验证
 	if($("#oldpassword").val()==""){$("#msg").html("<span class='label label-important'>原密码不能为空</span>");return false;}
 	if($("#password").val()==""){$("#msg").html("<span class='label label-important'>新密码不能为空</span>");return false;}
@@ -68,7 +71,18 @@ function changePassword(){
  */
 function setFrameHeight(id){ 
  	var iframe = $("#iframepage");
- 	var h = iframe.contents().find("#"+(id||"box")).height() //参数id优先
- 		 || iframe.contents().height(); //缺省值为body的高度
- 	iframe.height((h>460) ? (h+50) : 460);  //575 565
+ 	var h1 = iframe.contents().find("#"+(id||"box")).height();//box高度
+ 	var h2 = document.body.clientHeight-110;//body高度
+ 	if(h1!=null){
+ 		if(h1>h2){
+ 			iframe.height(h1+25);
+ 			$("#content").height(h1);
+ 		}else{
+ 			iframe.height(h2+25);
+ 			$("#content").height(h2);
+ 		}
+ 	}else{
+ 		iframe.height(h2+25);
+ 		$("#content").height(h2);
+ 	}
 }

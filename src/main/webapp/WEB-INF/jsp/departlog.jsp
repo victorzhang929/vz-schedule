@@ -5,8 +5,8 @@
 <head>
 <%@ include file="include/head.jsp"%>
 <link rel="stylesheet" href="<%=basePath%>css/subiframepage.css"/>
-<script type="text/javascript" src="<%=basePath%>js/userslog.js"></script>
-<title>用户日志</title>
+<script type="text/javascript" src="<%=basePath%>js/departlog.js"></script>
+<title>部门日志</title>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 	<div id="content-header">
 		<div id="breadcrumb">
 			<a href="javascript:void(0);" title="日志中心" class="tip-bottom"> <i class="icon-cogs"></i> 日志中心
-			</a> <a href="javascript:void(0);" title="用户日志" class="tip-right"> 用户日志 </a>
+			</a> <a href="javascript:void(0);" title="部门日志" class="tip-right"> 部门日志 </a>
 		</div>
 	</div>
 

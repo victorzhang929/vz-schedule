@@ -20,7 +20,7 @@ import com.victorzhang.schedule.service.UserService;
  */
 
 @Controller
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
@@ -64,7 +64,7 @@ public class UserController {
 	}
 	
 	/**
-	 * 用户信息导航提供数据
+	 * 保存用户信息
 	 * @return
 	 */
 	@RequestMapping("/saveUserInfo.do")
@@ -72,6 +72,86 @@ public class UserController {
 	public Map<String,Object> saveUserInfo(String username,String realname,String usermobile,String useridcard,String usermail){
 		return userService.doSaveUserInfo(request,username,realname,usermobile,useridcard,usermail);
 		
+	}
+	
+	/**
+	 * 教师页面导航
+	 * @return
+	 */
+	@RequestMapping("/teacherInfoUI.do")
+	public String teacherInfoUI(){
+		return "jsp/teacherInfo";
+		
+	}
+	
+	/**
+	 * 学生页面导航
+	 * @return
+	 */
+	@RequestMapping("/studentInfoUI.do")
+	public String studentInfoUI(){
+		return "jsp/studentInfo";
+	}
+	
+	/**
+	 * 获取学生，教师信息表
+	 * @param _page
+	 * @param _pageSize
+	 * @param dname
+	 * @param cname
+	 * @return
+	 */
+	@RequestMapping("/getUserInfos.do")
+	@ResponseBody
+	public Map<String,Object> getUserInfos(String _page,String _pageSize,String dname,String cname,String roleid){
+		return userService.getUserInfos(_page,_pageSize,dname,cname,roleid);
+	}
+	
+	/**
+	 * 根据userid获取学生，教师信息
+	 * @param userid
+	 * @return
+	 */
+	@RequestMapping("/getUserInfoByUserid.do")
+	@ResponseBody
+	public Map<String,Object> getUserInfoByUserid(String userid){
+		return userService.getUserInfoByUserid(userid);
+	}
+	
+	/**
+	 * 保存学生，教师信息
+	 * @param userid
+	 * @param dname
+	 * @param cname
+	 * @param realname
+	 * @return
+	 */
+	@RequestMapping("/doUpdateStuTeaInfo.do")
+	@ResponseBody
+	public Map<String,Object> doUpdateStuTeaInfo(String userid,String dname,String cname,String realname){
+		return userService.doUpdateStuTeaInfo(userid,dname,cname,realname);
+	}
+	
+	/**
+	 * 根据userid删除该用户
+	 * @param userid
+	 * @return
+	 */
+	@RequestMapping("/deleteUserInfo.do")
+	@ResponseBody
+	public Map<String,Object> deleteUserInfo(String userid){
+		return userService.deleteUserInfo(userid);
+	}
+	
+	/**
+	 * 添加用户
+	 * @param userid
+	 * @return
+	 */
+	@RequestMapping("/addUserInfo.do")
+	@ResponseBody
+	public Map<String,Object> addUserInfo(String roleid,String dname,String cname,String username,String realname,String usermobile,String usermail){
+		return userService.addUserInfo(request,roleid,dname,cname,username,realname,usermobile,usermail);
 	}
 	
 }

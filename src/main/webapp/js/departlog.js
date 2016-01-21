@@ -1,7 +1,7 @@
 $(function(){
 	tableDivPage();//生成分页信息div(必须)
 	p_pageSelect();//页码
-	queryAllLogLx('querytype','3');//初始化日志类型
+	queryAllLogLx('querytype','2');//初始化日志类型
 	load();//读取数据
 });
 
@@ -18,7 +18,7 @@ function load(pge){
 	param.stadate = $("#querystadate").val();
 	param.enddate = $("#queryenddate").val();
 	//系统日志1，部门日志2，用户为3
-	param.roleType = 3;
+	param.roleType = 2;
 	
 	$.ajax({
         url: path+"/log/querylogpage.do",

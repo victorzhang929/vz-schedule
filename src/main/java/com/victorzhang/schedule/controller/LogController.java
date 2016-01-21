@@ -1,5 +1,6 @@
 package com.victorzhang.schedule.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +32,36 @@ public class LogController {
 	
 	@RequestMapping("/querylogpage.do")
 	@ResponseBody
-	public Map<String,Object> querylogpage(String _page,String _pageSize,String loglx,String stadate,String enddate,String isuserslog){
-		return logService.querylogpage(request,_page,_pageSize,loglx,stadate,enddate,isuserslog);
+	public Map<String,Object> querylogpage(String _page,String _pageSize,String loglx,String dname,String stadate,String enddate,String roleType){
+		return logService.querylogpage(request,_page,_pageSize,loglx,dname,stadate,enddate,roleType);
 	}
 	
+	/**
+	 * 查看当前用户所有日志类型
+	 * @param roleType日志类型：系统，部门，用户
+	 * @return
+	 */
+	@RequestMapping("/queryAllLogLx.do")
+	@ResponseBody
+	public List<Map<String,Object>> queryAllLogLx(String roleType){
+		return logService.queryAllLogLx(request,roleType);
+	}
+	
+	/**
+	 * 系统日志导航
+	 * @return
+	 */
+	@RequestMapping("/syslogUI.do")
+	public String syslogUI(){
+		return "jsp/syslog";
+	}
+	
+	/**
+	 * 部门日志导航
+	 * @return
+	 */
+	@RequestMapping("/departlogUI.do")
+	public String departlogUI(){
+		return "jsp/departlog";
+	}
 }

@@ -31,4 +31,11 @@ public interface LogMapper {
 	 */
 	List<Map<String, Object>> querylogpage(Map<String, Object> param);
 
+	/**
+	 * 查看当前用户所有日志类型
+	 * @param userid
+	 * @return
+	 */
+	List<Map<String, Object>> queryAllLogLx(Map<String, Object> param);
+
 }

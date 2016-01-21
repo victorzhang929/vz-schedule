@@ -21,19 +21,157 @@
 	<select id="getUserInfo" resultType="java.util.Map"
 		parameterType="java.lang.String">
 		SELECT
-		u.username,u.realname,u.useridcard,u.usermobile,u.usermail,ui.username AS inputusername,
-		u.inputdate,u.inputip,uu.username AS updateusername,u.updateip,u.updatedate,r.rolename,d.dname,c.cname
-		FROM users u
+		u.username,u.realname,u.useridcard,u.usermobile,u.usermail,ui.username
+		AS inputusername,
+		u.inputdate,u.inputip,uu.username AS
+		updateusername,u.updateip,u.updatedate,r.rolename,d.dname,c.cname
+		FROM
+		users u
 		LEFT JOIN role r
 		ON r.roleid = u.roleid
 		LEFT JOIN department d
-		ON d.departid = u.departid
+		ON
+		d.departid = u.departid
 		LEFT JOIN classes c
 		ON c.classid = u.classid
 		LEFT JOIN users ui
 		ON u.inputuserid = ui.userid
 		LEFT JOIN users uu
-		ON u.updateuserid = uu.userid
+		ON
+		u.updateuserid = uu.userid
 		where u.userid = #{userid}
 	</select>
+
+	<!-- 保存用户信息 -->
+	<update id="doSaveUserInfo" parameterType="java.util.Map">
+		UPDATE users SET
+		username=#{username},realname=#{realname}
+		<if test="usermobile != null and usermobile != ''">
+			,usermobile=#{usermobile}
+		</if>
+		<if test="useridcard != null and useridcard != ''">
+			,useridcard=#{useridcard}
+		</if>
+		<if test="usermail != null and usermail != ''">
+			,usermail=#{usermail}
+		</if>
+		WHERE userid = #{userid}
+	</update>
+	
+	<!-- 根据roleid值查询学生或教师总数 -->
+	<select id="queryUserCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(u.userid)
+		FROM users u
+		LEFT JOIN department d
+		ON d.departid = u.departid
+		LEFT JOIN classes c
+		ON c.classid = u.classid
+		<where>
+			roleid = #{roleid}
+			<if test="dname != null and dname != ''">
+				AND d.dname = #{dname}
+			</if>
+			<if test="cname != null and cname != ''">
+				AND c.cname = #{cname}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 根据roleid值查询学生或教师总记录  -->
+	<select id="queryUserInfos" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT 
+		u.userid,u.realname,d.dname,c.cname
+		FROM
+		users u
+		LEFT JOIN department d
+		ON
+		d.departid = u.departid
+		LEFT JOIN classes c
+		ON c.classid = u.classid
+		<where>
+			roleid = #{roleid}
+			<if test="dname != null and dname != ''">
+				AND d.dname = #{dname}
+			</if>
+			<if test="cname != null and cname != ''">
+				AND c.cname = #{cname}
+			</if>
+		</where>
+		ORDER BY u.updatedate,u.inputdate DESC limit ${begin},${pageSize}
+	</select>
+	
+	<!-- 根据userid获取学生，教师信息 -->
+	<select id="getUserInfoByUserid" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT 
+		u.username,u.realname,u.usermobile,u.usermail,d.dname,c.cname
+		FROM
+		users u
+		LEFT JOIN department d
+		ON
+		d.departid = u.departid
+		LEFT JOIN classes c
+		ON c.classid = u.classid
+		WHERE u.userid = #{userid}
+	</select>
+	
+	<!-- 保存学生，教师信息 -->
+	<update id="doUpdateStuTeaInfo" parameterType="java.util.Map">
+		UPDATE users SET 
+		<if test="cname != null and cname != ''">
+			classid = (SELECT classid FROM classes WHERE cname = #{cname})
+		</if>
+		realname = #{realname},
+		departid = (SELECT departid FROM department WHERE dname = #{dname}),
+		WHERE userid = #{userid}
+	</update>
+	
+	<!-- 根据userid删除该用户 -->
+	<delete id="deleteUserInfo" parameterType="java.lang.String">
+		Delete FROM users
+		where userid = #{userid}
+	</delete>
+	
+	<!-- 添加用户 -->
+	<insert id="addUserInfo" parameterType="java.util.Map">
+		INSERT INTO users 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				userid, 
+				roleid,
+				departid,
+				classid,
+				username,
+				password,
+				realname,
+			<if test="usermobile != null and usermobile != ''">
+				usermobile,
+			</if>
+			<if test="usermail != null and usermail != ''">
+				usermail,
+			</if>
+				randomcode,
+				inputuserid,
+				inputdate,
+				inputip
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+				#{userid},
+				#{roleid},
+				(SELECT departid FROM department WHERE dname = #{dname}),
+				(SELECT classid FROM classes WHERE cname = #{cname}),
+				#{username},
+				#{password},
+				#{realname},
+			<if test="usermobile != null and usermobile != ''">
+				#{usermobile},
+			</if>
+			<if test="usermail != null and usermail != ''">
+				#{usermail},
+			</if>
+				#{randomcode},
+				#{inputuserid},
+				#{inputdate},
+				#{inputip},
+		</trim>
+	</insert>
+	
 </mapper>

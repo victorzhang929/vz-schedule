@@ -43,9 +43,9 @@ public class CommonUtils {
 	 * @param request
 	 * @param id
 	 */
-	public static String sesAttr(HttpServletRequest request, String userid){
-		if(request.getSession().getAttribute("userid")!=null){
-			return request.getSession().getAttribute(userid).toString();
+	public static String sesAttr(HttpServletRequest request, String id){
+		if(request.getSession().getAttribute(id)!=null){
+			return request.getSession().getAttribute(id).toString();
 		}
 		return null;
 	}
