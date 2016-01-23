@@ -68,7 +68,9 @@ public class LogServiceImpl implements LogService {
 			param.put("loglx", loglx);
 		}
 		
-		if(StringUtils.equals(roleType, "1")&&!StringUtils.equals(dname, "所属学院")){//系统日志,按部门查询，系统管理员权限
+		if(StringUtils.equals(roleType, "1")){//系统日志,按部门查询，系统管理员权限
+			if(StringUtils.equals(dname, "所属学院"))
+				dname = "";
 			param.put("dname", dname);
 		}else if(StringUtils.equals(roleType, "2")){//部门日志，部门管理员权限
 			String departid = CommonUtils.sesAttr(request, "departid");

@@ -129,7 +129,7 @@ public class UserController {
 	@RequestMapping("/doUpdateStuTeaInfo.do")
 	@ResponseBody
 	public Map<String,Object> doUpdateStuTeaInfo(String userid,String dname,String cname,String realname){
-		return userService.doUpdateStuTeaInfo(userid,dname,cname,realname);
+		return userService.doUpdateStuTeaInfo(request,userid,dname,cname,realname);
 	}
 	
 	/**
@@ -140,7 +140,7 @@ public class UserController {
 	@RequestMapping("/deleteUserInfo.do")
 	@ResponseBody
 	public Map<String,Object> deleteUserInfo(String userid){
-		return userService.deleteUserInfo(userid);
+		return userService.deleteUserInfo(request,userid);
 	}
 	
 	/**

@@ -21,10 +21,6 @@
 	<select id="queryClassesInfos" resultType="java.util.Map" parameterType="java.util.Map">
 		SELECT c.classid,c.cname,d.dname,(SELECT COUNT(u.userid) FROM users u
 			<where>
-				u.roleid = '3' AND u.classid = c.classid
-			</where>
-		) AS teaNum,(SELECT COUNT(u.userid) FROM users u
-			<where>
 				u.roleid = '4' AND u.classid = c.classid
 			</where>
 		) AS stuNum
@@ -90,8 +86,8 @@
 			<if test="cname != null and cname != ''">
 				cname,
 			</if>
-			<if test="dphone != null and dphone != ''">
-				dphone,
+			<if test="departid != null and departid != ''">
+				departid,
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -101,8 +97,8 @@
 			<if test="cname != null and cname != ''">
 				#{cname},
 			</if>
-			<if test="dname != null and dname != ''">
-				#{dname},
+			<if test="departid != null and departid != ''">
+				#{departid},
 			</if>
 		</trim>
 	</insert>

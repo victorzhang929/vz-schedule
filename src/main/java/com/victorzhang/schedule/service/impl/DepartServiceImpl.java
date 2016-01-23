@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.victorzhang.schedule.mapper.DepartMapper;
 import com.victorzhang.schedule.pojo.Depart;
 import com.victorzhang.schedule.service.DepartService;
+import com.victorzhang.schedule.service.LogService;
 import com.victorzhang.schedule.util.CommonUtils;
 
 @Service("departService")
@@ -22,12 +23,16 @@ public class DepartServiceImpl implements DepartService {
 	@Autowired
 	@Qualifier("departMapper")
 	private DepartMapper departMapper;
+	
+	@Autowired
+	@Qualifier("logService")
+	private LogService logService;
 
 	@Override
 	public Map<String, Object> queryDepartInfos(HttpServletRequest request, String _page, String _pageSize, String dname) {
-		//验证管理员权限(系统管理员roleid=1)
+		//学院信息系统管理员和班级管理员权限
 		String roleid = CommonUtils.sesAttr(request, "roleid");
-		if(StringUtils.equals(roleid, "1")){
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
 			int page = CommonUtils.paraPage(_page);
 			int pageSize = CommonUtils.paraPageSize(_pageSize);
 			
@@ -86,7 +91,7 @@ public class DepartServiceImpl implements DepartService {
 			Map<String,Object> result = new HashMap<>();
 			//后台验证
 			if(StringUtils.isEmpty(departid)){
-				result.put("msg", "请选择部门");
+				result.put("msg", "请选择学院");
 				return result;
 			}
 			if(StringUtils.isEmpty(dname)){
@@ -111,6 +116,7 @@ public class DepartServiceImpl implements DepartService {
 			param.put("connperson", connperson);
 			param.put("connphone", connphone);
 			departMapper.doUpdateDepart(param);
+			logService.addLog("更新","更新学院信息，"+dname+"信息更新成功");//加入日志
 			result.put("msg", "保存成功");
 			return result;
 		}
@@ -129,6 +135,7 @@ public class DepartServiceImpl implements DepartService {
 				return result;
 			}
 			departMapper.deleteDepart(departid);
+			logService.addLog("删除","删除学院信息，编号："+departid+"学院信息删除成功");//加入日志
 			result.put("msg", "删除成功");
 			return result;
 		}
@@ -168,8 +175,17 @@ public class DepartServiceImpl implements DepartService {
 			param.put("connphone", connphone);
 			param.put("ddate", ddate);
 			departMapper.addDepart(param);
+			logService.addLog("添加","添加学院信息，"+dname+"学院信息添加成功");//加入日志
 			result.put("msg", "添加成功");
 			return result;
+		}
+		return null;
+	}
+
+	@Override
+	public String getDepartidByDname(String dname) {
+		if(StringUtils.isNotEmpty(dname)){
+			return departMapper.getDepartidByDname(dname);
 		}
 		return null;
 	}

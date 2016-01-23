@@ -26,10 +26,10 @@ function load(pge){
 		success : function(res) {
 			var mainTable = "<table class='table table-bordered table-striped' >"
 				+ "<thead><tr>"
-				+ "<th style='width:5%'>编号</th>"
-				+ "<th style='width:25%'>真实姓名</th>"
-				+ "<th style='width:25%'>所在学院</th>"
-				+ "<th style='width:15%'>操作</th>" 
+				+ "<th style='width:10%'>编号</th>"
+				+ "<th style='width:30%'>真实姓名</th>"
+				+ "<th style='width:50%'>所在学院</th>"
+				+ "<th style='width:10%'>操作</th>" 
 				+ "</tr></thead>" + "<tbody id='trs'>";
 
 		var datas = res.data;
@@ -44,7 +44,7 @@ function load(pge){
 					+ "</tr>";
 			}
 		} else {
-			mainTable += "<tr><td colspan='5' style='height:40px;font-size:14px;font-size:16px;font-weight: 700;'>暂无数据!</td></tr>";
+			mainTable += "<tr><td colspan='5'>暂无数据!</td></tr>";
 		}
 		
 		mainTable += "</tbody></table>";
@@ -184,7 +184,7 @@ function deleteInfo(userid){
 /**
  * 添加用户显示模态框，清空信息
  */
-function addStudentUI(){
+function addTeacherUI(){
 	$("#msg2").html("");
 	$("#m2dname").removeAttr("disabled");
 	queryAllDepartment('m2dname');
@@ -197,7 +197,7 @@ function addStudentUI(){
 /**
  * 添加班级
  */
-function addStudent(){
+function addTeacher(){
 	var param = {};
 	param.dname = $("#m2dname").val();
 	param.username = $("#m2username").val();

@@ -4,7 +4,7 @@
 <html>
 <head>
 	<%@ include file="include/head.jsp"%>
-	<title>课表安排系统</title>
+	<title>校园管理中心</title>
 	<script src="<%=basePath%>js/jCookie.js"></script>
 	<script src="<%=basePath%>js/main.js"></script>
 </head>
@@ -20,10 +20,9 @@
 	    		<a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
 	    			<i class="icon icon-envelope"></i> 
 	    			<span class="text">消息</span>
-	    			<span class="label label-important" id='wdMessSum'>0</span> <b class="caret"></b>
+	    			<span class="label label-important" id='unreadSum'></span> <b class="caret"></b>
 	    		</a>
-		      	<ul class="dropdown-menu">
-		      		<li><a href='javascript:void(0);' class='sTrash' title='' id='meAll' ><i class='icon-bell'></i> 全部未读消息 >></a></li>
+		      	<ul class="dropdown-menu" id='myMsgUnread'>
 		      	</ul>
 	    	</li>
     
@@ -58,12 +57,12 @@
       			</ul>
     		</li>
     
-    		<li class="submenu"> 
+    		<li class="submenu" id='ul1Parent'> 
     			<a href="javascript:void(0);">
     				<i class="icon-cogs"></i> <span>个人中心</span>
     				<i class="icon-chevron-right"></i>
     			</a>
-    			<ul id="ul2">
+    			<ul id="ul1">
 	        		<li><a href="javascript:void(0);" id="userInfoUI" onclick="clickNavMenu(this.id,'<%=basePath%>user/userInfoUI.do')">用户信息</a></li>
 	        		<!-- 系统管理员，部门管理员权限 -->
 	        		<c:if test="${ sessionScope.roleid =='1'|| sessionScope.roleid =='2'}">
@@ -77,27 +76,28 @@
 	        		</c:if>
 	    		</ul> 
     		</li>
-    		<li class="submenu"> 
+    		<li class="submenu" id='ul2Parent'> 
     			<a href="javascript:void(0);">
     				<i class="icon-envelope"></i> <span>信息中心</span>
     				<i class="icon-chevron-right"></i>
     			</a>
     			<ul id="ul2">
     				<!-- 系统管理员权限 -->
-        			<c:if test="${ sessionScope.roleid =='1'}">
-	        			<li><a href="javascript:void(0);">发布公告</a></li>
+        			<c:if test="${ sessionScope.roleid =='1'|| sessionScope.roleid =='2'}">
+		        		<li><a href="javascript:void(0);" id="publishNBUI" onclick="clickNavMenu(this.id,'<%=basePath%>message/publishNBUI.do')">发布公告</a></li>
         			</c:if>
-	        		<li><a href="javascript:void(0);">公告栏</a></li>
+		        		<li><a href="javascript:void(0);" id="noticeBoardUI" onclick="clickNavMenu(this.id,'<%=basePath%>message/noticeBoardUI.do')">公告栏</a></li>
 	    		</ul> 
     		</li>
-    		<li class="submenu"> 
+    		<!-- 系统管理员,部门管理员权限 - -->
+    		<li class="submenu"  id='ul3Parent'> 
     			<a href="javascript:void(0);">
     				<i class="icon-list"></i> <span>日志中心</span>
     				<i class="icon-chevron-right"></i>
     			</a>
-    			<ul id="ul2">
-        			<!-- 部门管理员权限 - -->
-        			<c:if test="${ sessionScope.roleid =='2'}">
+    			<ul id="ul3">
+    				<!-- 部门管理员权限 - -->
+    				<c:if test="${ sessionScope.roleid =='2'}">
 	        			<li><a href="javascript:void(0);" id="departlogUI" onclick="clickNavMenu(this.id,'<%=basePath%>log/departlogUI.do')">部门日志</a></li>
         			</c:if>
 	        		<!-- 系统管理员-->

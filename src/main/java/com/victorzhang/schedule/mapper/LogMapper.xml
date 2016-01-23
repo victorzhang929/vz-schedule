@@ -84,8 +84,8 @@
 	
 	<!-- 日志记录 -->
 	<select id="querylogpage" resultType="java.util.Map" parameterType="java.util.Map">
-		select DATE_FORMAT(l.userdate,'%Y-%m-%d %H:%k:%s') as userdate,l.loglx,l.logms,l.userip,u.username from log l 
-		left join users u on
+		SELECT DATE_FORMAT(l.userdate,'%Y-%m-%d %H:%h:%s') AS userdate,l.loglx,l.logms,l.userip,u.username,u.realname FROM log l 
+		LEFT JOIN users u ON
 		l.userid = u.userid
 		<where>
 			<if test="loglx != null and loglx != ''">
@@ -101,7 +101,7 @@
 					and #{enddate} >= l.userdate
 			</if>
 		</where>
-		order by l.userdate limit ${begin},${pageSize}
+		ORDER BY l.userdate DESC LIMIT ${begin},${pageSize}
 	</select>
 	
 	<!-- 查看当前用户所有日志类型 -->

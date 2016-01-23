@@ -1,3 +1,60 @@
+$(function(){//初始化未读消息
+	initUnreadMsg('myMsgUnread','unreadSum');
+});
+
+function initUnreadMsg(msId,numId){
+	$.ajax({
+		type: "POST",
+		url: path+"/message/getUnreadMsg.do",
+		dataType: "json",
+		error: function(request) {
+			tipDialog("提交失败，连接错误。请刷新页面重试。");
+	    },success: function(re){
+	    	var msg = "";
+	    	var unreadSum = 0;
+    		var datas = re.data;
+    		unreadSum = re.unreadNum;
+    		if (datas.length > 0) {
+    			for ( var i = 0; i < datas.length; i++) {
+    				msg += "<li><a href='javascript:void(0);' title='' onclick=showNews('"+datas[i].msid+"','"+datas[i].ms+"') ><i class='icon-envelope-alt'></i>"+datas[i].ms+"</a></li>";
+    			}
+    		}
+    		msg += "<li><a href='javascript:void(0);' title='全部消息' onclick=clickNavMenu('this.id','"+path+"/message/getAllMsg.do') ><i class='icon-bell'></i> 全部消息 >></a></li>";
+	    	$("#"+msId).html(msg);
+	    	$("#"+numId).html(unreadSum);
+		}
+	});
+}
+
+/**
+ * 阅读未读信息
+ * @param msid
+ * @param ms
+ */
+function showNews(msid,ms){
+	dialog({
+		title:'详细消息内容',
+		width:320,
+		fixed: true,
+	    content: "<textarea disabled style='width:100%'>"+ms+"</textarea>",
+    	okValue: '确定',
+        ok: function () {
+            this.title('提交中…');
+            $.ajax({
+        		type: "POST",
+        		url: path+"/message/doReadMsg.do",
+        		data:{msid:msid},
+        		error: function(request) {
+        			tipDialog("提交失败，连接错误。请刷新页面重试。");
+        	    },success: function(res){
+        	    	tipDialog("已阅读");
+        	    	initUnreadMsg('myMsgUnread','unreadSum');
+        	    }
+            });
+        }
+	}).show();
+}
+
 /**
  * main.jsp主页js支持
  */

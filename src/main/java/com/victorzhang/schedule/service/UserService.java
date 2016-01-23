@@ -1,5 +1,6 @@
 package com.victorzhang.schedule.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,14 +59,14 @@ public interface UserService {
 	 * @param realname
 	 * @return
 	 */
-	Map<String, Object> doUpdateStuTeaInfo(String userid, String dname, String cname, String realname);
+	Map<String, Object> doUpdateStuTeaInfo(HttpServletRequest request,String userid, String dname, String cname, String realname);
 
 	/**
 	 * 根据userid删除该用户
 	 * @param userid
 	 * @return
 	 */
-	Map<String, Object> deleteUserInfo(String userid);
+	Map<String, Object> deleteUserInfo(HttpServletRequest request,String userid);
 
 	/**
 	 * 添加用户
@@ -79,5 +80,7 @@ public interface UserService {
 	 * @return
 	 */
 	Map<String, Object> addUserInfo(HttpServletRequest request,String roleid, String dname, String cname, String username, String realname, String usermobile, String usermail);
+
+	List<Map<String, Object>> queryUseridsByDid(String departid);
 
 }

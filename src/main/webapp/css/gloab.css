@@ -9,6 +9,13 @@
 .table td {text-align: center;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .odd {background-color: #eeeeee;}
 
+#user-nav > ul ul > li > a {
+    text-align: left;
+    width: 180;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 .bt {
 	font-weight: 300;
 	margin: 0px 4px 0px 4px;

@@ -53,4 +53,6 @@ public interface DepartMapper {
 	 */
 	void addDepart(Map<String, Object> param);
 
+	String getDepartidByDname(String dname);
+
 }

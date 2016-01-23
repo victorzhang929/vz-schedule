@@ -48,7 +48,7 @@ function load(pge){
 					+ "</tr>";
 			}
 		} else {
-			mainTable += "<tr><td colspan='5' style='height:40px;font-size:14px;font-size:16px;font-weight: 700;'>暂无数据!</td></tr>";
+			mainTable += "<tr><td colspan='5'>暂无数据!</td></tr>";
 		}
 		
 		mainTable += "</tbody></table>";

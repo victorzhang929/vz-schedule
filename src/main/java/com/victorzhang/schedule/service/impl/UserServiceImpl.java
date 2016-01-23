@@ -1,6 +1,7 @@
 package com.victorzhang.schedule.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.victorzhang.schedule.mapper.UserMapper;
+import com.victorzhang.schedule.service.LogService;
 import com.victorzhang.schedule.service.UserService;
 import com.victorzhang.schedule.util.CommonUtils;
 import com.victorzhang.schedule.util.MD5Utils;
@@ -22,6 +24,10 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	@Qualifier("userMapper")
 	private UserMapper userMapper;
+	
+	@Autowired
+	@Qualifier("logService")
+	private LogService logService;
 	
 	@Override
 	public Map<String, Object> changePassword(HttpServletRequest request,String oldpassword, String password, String password2) {
@@ -38,6 +44,7 @@ public class UserServiceImpl implements UserService {
 		}else {
 			result.put("msg", doValChaPassword(request,oldpassword,password));
 		}
+		logService.addLog("更新", "更新密码："+result.get("msg").toString());//加入日志
 		return result;
 	}
 	
@@ -88,20 +95,22 @@ public class UserServiceImpl implements UserService {
 			return result;
 			
 		}
-		if(!pmobile.matcher(usermobile).matches()){
+		if(StringUtils.isNotEmpty(usermobile)&&!pmobile.matcher(usermobile).matches()){
 			result.put("msg", "请输入正确的手机号");
 			return result;
 		}
-		if(!pidcard.matcher(useridcard).matches()){
+		if(StringUtils.isNotEmpty(useridcard)&&!pidcard.matcher(useridcard).matches()){
 			result.put("msg", "请输入正确的身份证号");
 			return result;
 		}
-		if(!pemail.matcher(usermail).matches()){
+		if(StringUtils.isNotEmpty(usermail)&&!pemail.matcher(usermail).matches()){
 			result.put("msg", "请输入正确的邮箱地址");
 			return result;
 		}
 		
 		//验证通过
+		String updatedate = CommonUtils.getDateTime();
+		String updateip = CommonUtils.getIpAddr();
 		Map<String,Object> param = new HashMap<>();
 		param.put("userid", userid);
 		param.put("username", username);
@@ -109,9 +118,13 @@ public class UserServiceImpl implements UserService {
 		param.put("usermobile", usermobile);
 		param.put("useridcard", useridcard);
 		param.put("usermail", usermail);
+		param.put("updateuserid", userid);
+		param.put("updatedate", updatedate);
+		param.put("updateip", updateip);
 		
 		userMapper.doSaveUserInfo(param);
 		result.put("msg", "保存成功");
+		logService.addLog("更新","更新用户信息，"+realname+"信息更新成功");//加入日志
 		return result;
 	}
 
@@ -152,110 +165,145 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Map<String, Object> doUpdateStuTeaInfo(String userid, String dname, String cname, String realname) {
-		Map<String,Object> result = new HashMap<>();
-		//后台验证
-		if(StringUtils.isEmpty(userid)){
-			result.put("msg", "请选择一名用户");
+	public Map<String, Object> doUpdateStuTeaInfo(HttpServletRequest request,String userid, String dname, String cname, String realname) {
+		//用户信息系统管理员和班级管理员权限
+		String roleid = CommonUtils.sesAttr(request, "roleid");
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
+			Map<String,Object> result = new HashMap<>();
+			//后台验证
+			if(StringUtils.isEmpty(userid)){
+				result.put("msg", "请选择一名用户");
+				return result;
+			}
+			if(StringUtils.equals(dname, "所属学院")){
+				result.put("msg", "请选择学院");
+				return result;
+			}
+			if(StringUtils.equals(cname, "所属班级")){
+				result.put("msg", "请选择班级");
+				return result;
+			}
+			if(StringUtils.isEmpty(realname)){
+				result.put("msg", "真实姓名不能为空");
+				return result;
+			}
+			
+			//验证通过
+			Map<String,Object> param = new HashMap<>();
+			param.put("udateuserid", CommonUtils.sesAttr(request, "userid"));
+			param.put("updatedate", CommonUtils.getDateTime());
+			param.put("updateip", CommonUtils.getIpAddr());
+			param.put("userid", userid);
+			param.put("dname", dname);
+			param.put("cname", cname);
+			param.put("realname", realname);
+			
+			userMapper.doUpdateStuTeaInfo(param);
+			result.put("msg", "保存成功");
+			if(StringUtils.isNotEmpty(cname)){//教师从属学院，区分教师和学生
+				logService.addLog("更新", "更新学生信息，学院："+dname+",班级："+cname+",真实姓名"+realname+",最后更新时间:"+CommonUtils.getDateTime());
+			}else{
+				logService.addLog("更新", "更新教师信息，学院："+dname+",真实姓名"+realname+",最后更新时间:"+CommonUtils.getDateTime());
+			}
 			return result;
 		}
-		if(StringUtils.equals(dname, "所属学院")){
-			result.put("msg", "请选择学院");
-			return result;
-		}
-		if(StringUtils.equals(cname, "所属班级")){
-			result.put("msg", "请选择班级");
-			return result;
-		}
-		if(StringUtils.isEmpty(realname)){
-			result.put("msg", "真实姓名不能为空");
-			return result;
-		}
-		
-		//验证通过
-		Map<String,Object> param = new HashMap<>();
-		param.put("userid", userid);
-		param.put("dname", dname);
-		param.put("cname", cname);
-		param.put("realname", realname);
-		
-		userMapper.doUpdateStuTeaInfo(param);
-		result.put("msg", "保存成功");
-		return result;
+		return null;
 	}
 
 	@Override
-	public Map<String, Object> deleteUserInfo(String userid) {
-		Map<String,Object> result = new HashMap<>();
-		//后台验证
-		if(StringUtils.isEmpty(userid)){
-			result.put("msg", "请选择一名用户");
+	public Map<String, Object> deleteUserInfo(HttpServletRequest request,String userid) {
+		//用户信息系统管理员和班级管理员权限
+		String roleid = CommonUtils.sesAttr(request, "roleid");
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
+			Map<String,Object> result = new HashMap<>();
+			//后台验证
+			if(StringUtils.isEmpty(userid)){
+				result.put("msg", "请选择一名用户");
+				return result;
+			}
+			userMapper.deleteUserInfo(userid);
+			result.put("msg", "删除成功");
+			logService.addLog("删除", "删除用户信息，用户编号为："+userid+"被删除,删除时间:"+CommonUtils.getDateTime());
 			return result;
 		}
-		userMapper.deleteUserInfo(userid);
-		result.put("msg", "删除成功");
-		return result;
+		return null;
 	}
 
 	@Override
 	public Map<String, Object> addUserInfo(HttpServletRequest request,String roleid, String dname, String cname, String username, String realname, String usermobile,
 			String usermail) {
-		//获取创建人信息
-		String inputuserid = CommonUtils.sesAttr(request, "userid");
-		String inputdate = CommonUtils.getDateTime();
-		String inputip = CommonUtils.getIpAddr();
-		//后台验证
-		Pattern pmobile = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"); 
-		Pattern pemail= Pattern.compile("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$"); 
-		Map<String,Object> result = new HashMap<>();
-		if(StringUtils.equals(dname, "所属学院")){
-			result.put("msg", "请选择所属学院");
-			return result;
-		}
-		if(StringUtils.equals(cname, "所属班级")){
-			result.put("msg", "请选择所属班级");
-			return result;
-		}
-		if(StringUtils.isEmpty(username)){
-			result.put("msg", "用户名不能为空");
-			return result;
-		}
-		if(StringUtils.isEmpty(realname)){
-			result.put("msg", "真实姓名不能为空");
-			return result;
+		//用户信息系统管理员和班级管理员权限
+		String userroleid = CommonUtils.sesAttr(request, "roleid");
+		if(StringUtils.equals(userroleid, "1")||StringUtils.equals(userroleid, "2")){
+			//获取创建人信息
+			String inputuserid = CommonUtils.sesAttr(request, "userid");
+			String inputdate = CommonUtils.getDateTime();
+			String inputip = CommonUtils.getIpAddr();
+			//后台验证
+			Pattern pmobile = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"); 
+			Pattern pemail= Pattern.compile("^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$"); 
+			Map<String,Object> result = new HashMap<>();
+			if(StringUtils.equals(dname, "所属学院")){
+				result.put("msg", "请选择所属学院");
+				return result;
+			}
+			if(StringUtils.equals(cname, "所属班级")){
+				result.put("msg", "请选择所属班级");
+				return result;
+			}
+			if(StringUtils.isEmpty(username)){
+				result.put("msg", "用户名不能为空");
+				return result;
+			}
+			if(StringUtils.isEmpty(realname)){
+				result.put("msg", "真实姓名不能为空");
+				return result;
+				
+			}
+			if(StringUtils.isNotEmpty(usermobile)&&!pmobile.matcher(usermobile).matches()){
+				result.put("msg", "请输入正确的手机号");
+				return result;
+			}
+			if(StringUtils.isNotEmpty(usermail)&&!pemail.matcher(usermail).matches()){
+				result.put("msg", "请输入正确的邮箱地址");
+				return result;
+			}
+			String userid = CommonUtils.newUuid();
+			//默认密码设置111111
+			String password = new MD5Utils().getMD5ofStr("111111");
+			//找回密码激活码
+			String randomcode = CommonUtils.newUuid();
+			//验证通过
+			Map<String,Object> param = new HashMap<>();
+			param.put("userid", userid);
+			param.put("roleid", roleid);
+			param.put("dname", dname);
+			param.put("cname", cname);
+			param.put("username", username);
+			param.put("password", password);
+			param.put("realname", realname);
+			param.put("usermobile", usermobile);
+			param.put("usermail", usermail);
+			param.put("randomcode", randomcode);
+			param.put("inputuserid", inputuserid);
+			param.put("inputdate", inputdate);
+			param.put("inputip", inputip);
 			
-		}
-		if(StringUtils.isNotEmpty(usermobile)&&!pmobile.matcher(usermobile).matches()){
-			result.put("msg", "请输入正确的手机号");
+			userMapper.addUserInfo(param);
+			result.put("msg", "添加成功");
+			if(StringUtils.isNotEmpty(cname)){//教师从属学院，区分教师和学生
+				logService.addLog("添加", "添加学生信息，学院："+dname+",班级："+cname+",真实姓名"+realname+",添加时间:"+CommonUtils.getDateTime());
+			}else{
+				logService.addLog("添加", "添加教师信息，学院："+dname+",真实姓名"+realname+",添加时间:"+CommonUtils.getDateTime());
+			}
 			return result;
 		}
-		if(StringUtils.isNotEmpty(usermail)&&!pemail.matcher(usermail).matches()){
-			result.put("msg", "请输入正确的邮箱地址");
-			return result;
-		}
-		String userid = CommonUtils.newUuid();
-		//默认密码设置111111
-		String password = new MD5Utils().getMD5ofStr("111111");
-		//找回密码激活码
-		String randomcode = CommonUtils.newUuid();
-		//验证通过
-		Map<String,Object> param = new HashMap<>();
-		param.put("userid", userid);
-		param.put("roleid", roleid);
-		param.put("dname", dname);
-		param.put("cname", cname);
-		param.put("username", username);
-		param.put("password", password);
-		param.put("realname", realname);
-		param.put("usermobile", usermobile);
-		param.put("usermail", usermail);
-		param.put("randomcode", randomcode);
-		param.put("inputuserid", inputuserid);
-		param.put("inputdate", inputdate);
-		param.put("inputip", inputip);
-		
-		userMapper.addUserInfo(param);
-		result.put("msg", "添加成功");
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> queryUseridsByDid(String departid) {
+		List<Map<String,Object>> result = userMapper.queryUseridsByDid(departid);
 		return result;
 	}
 	

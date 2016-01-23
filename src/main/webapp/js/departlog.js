@@ -29,10 +29,12 @@ function load(pge){
 			var mainTable = "<table class='table table-bordered table-striped' >"
 				+ "<thead><tr>"
 				+ "<th style='width:5%'>编号</th>"
-				+ "<th style='width:15%'>操作类型</th>"
-				+ "<th style='width:50%'>操作说明</th>"
-				+ "<th style='width:15%'>操作日期</th>" 
-				+ "<th style='width:15%'>IP地址</th>" 
+				+ "<th style='width:8%'>操作类型</th>"
+				+ "<th style='width:8%'>用户名</th>"
+				+ "<th style='width:8%'>真实姓名</th>"
+				+ "<th style='width:51%'>操作说明</th>"
+				+ "<th style='width:10%'>操作日期</th>" 
+				+ "<th style='width:10%'>IP地址</th>" 
 				+ "</tr></thead>" + "<tbody id='trs'>";
 
 		var datas = res.data;
@@ -42,13 +44,15 @@ function load(pge){
 				mainTable += "<tr>"
 					+ "<td>"+index(res.page,res.pageSize,i)+"</td>"
 					+ "<td title='"+data.loglx+"'>" + data.loglx + "</td>" 
+					+ "<td title='"+data.username+"'>" + data.username + "</td>" 
+					+ "<td title='"+data.realname+"'>" + data.realname + "</td>" 
 					+ "<td title='"+data.logms+"'>" + data.logms + "</td>"
 					+ "<td title='"+data.userdate+"'>" + data.userdate + "</td>"
 					+ "<td title='"+data.userip+"'>" + data.userip + "</td>"
 					+ "</tr>";
 			}
 		} else {
-			mainTable += "<tr><td colspan='5' style='height:40px;font-size:14px;font-size:16px;font-weight: 700;'>暂无数据!</td></tr>";
+			mainTable += "<tr><td colspan='7' style='height:40px;font-size:14px;font-size:16px;font-weight: 700;'>暂无数据!</td></tr>";
 		}
 		
 		mainTable += "</tbody></table>";

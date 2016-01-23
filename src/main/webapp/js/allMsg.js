@@ -1,8 +1,6 @@
 $(function(){
 	tableDivPage();//生成分页信息div(必须)
 	p_pageSelect();//页码
-	queryAllLogLx('querytype','1');//初始化日志类型
-	queryAllDepartment('querydepart');//初始化所有学院
 	load();//读取数据
 });
 
@@ -15,15 +13,12 @@ function load(pge){
 	param._pageSize = $("#p_pageSelect_id").val();//分页
 	
 	// 搜索字段
-	param.loglx = $("#querytype").val();
-	param.dname = $("#querydepart").val();
+	param.isread = $("#querytype option:selected").val();
 	param.stadate = $("#querystadate").val();
 	param.enddate = $("#queryenddate").val();
-	//系统日志1，部门日志2，用户为3
-	param.roleType = "1";
 	
 	$.ajax({
-        url: path+"/log/querylogpage.do",
+        url: path+"/message/querymsgpage.do",
 		type : "POST",
 		data : param,
 		dataType : "json",
@@ -31,12 +26,10 @@ function load(pge){
 			var mainTable = "<table class='table table-bordered table-striped' >"
 				+ "<thead><tr>"
 				+ "<th style='width:5%'>编号</th>"
-				+ "<th style='width:8%'>操作类型</th>"
-				+ "<th style='width:8%'>用户名</th>"
-				+ "<th style='width:8%'>真实姓名</th>"
-				+ "<th style='width:51%'>操作说明</th>"
-				+ "<th style='width:10%'>操作日期</th>" 
-				+ "<th style='width:10%'>IP地址</th>" 
+				+ "<th style='width:50%'>消息内容</th>"
+				+ "<th style='width:15%'>发送人</th>"
+				+ "<th style='width:15%'>发送日期</th>" 
+				+ "<th style='width:15%'>发送人IP</th>" 
 				+ "</tr></thead>" + "<tbody id='trs'>";
 
 		var datas = res.data;
@@ -45,16 +38,14 @@ function load(pge){
 				var data = datas[i];
 				mainTable += "<tr>"
 					+ "<td>"+index(res.page,res.pageSize,i)+"</td>"
-					+ "<td title='"+data.loglx+"'>" + data.loglx + "</td>" 
-					+ "<td title='"+data.username+"'>" + data.username + "</td>" 
-					+ "<td title='"+data.realname+"'>" + data.realname + "</td>" 
-					+ "<td title='"+data.logms+"'>" + data.logms + "</td>"
-					+ "<td title='"+data.userdate+"'>" + data.userdate + "</td>"
-					+ "<td title='"+data.userip+"'>" + data.userip + "</td>"
+					+ "<td title='"+data.ms+"'>" + data.ms + "</td>" 
+					+ "<td title='"+data.realname+"'>" + data.realname + "</td>"
+					+ "<td title='"+data.seuserdate+"'>" + data.seuserdate + "</td>"
+					+ "<td title='"+data.seuserip+"'>" + data.seuserip + "</td>"
 					+ "</tr>";
 			}
 		} else {
-			mainTable += "<tr><td colspan='7'>暂无数据!</td></tr>";
+			mainTable += "<tr><td colspan='5'>暂无数据!</td></tr>";
 		}
 		
 		mainTable += "</tbody></table>";

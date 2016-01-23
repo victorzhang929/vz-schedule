@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import com.victorzhang.schedule.mapper.ClassesMapper;
 import com.victorzhang.schedule.service.ClassesService;
+import com.victorzhang.schedule.service.DepartService;
+import com.victorzhang.schedule.service.LogService;
 import com.victorzhang.schedule.util.CommonUtils;
 
 @Service("classesService")
@@ -22,11 +24,19 @@ public class ClassesServiceImpl implements ClassesService {
 	@Qualifier("classesMapper")
 	private ClassesMapper classesMapper;
 	
+	@Autowired
+	@Qualifier("logService")
+	private LogService logService;
+	
+	@Autowired
+	@Qualifier("departService")
+	private DepartService departService;
+	
 	@Override
 	public Map<String, Object> queryClassesInfos(HttpServletRequest request, String _page, String _pageSize, String cname, String dname) {
-		//验证系统管理员权限(部门管理员roleid=1)
+		//班级信息系统管理员和班级管理员权限
 		String roleid = CommonUtils.sesAttr(request, "roleid");
-		if(StringUtils.equals(roleid, "1")){
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
 			int page = CommonUtils.paraPage(_page);
 			int pageSize = CommonUtils.paraPageSize(_pageSize);
 			
@@ -58,9 +68,9 @@ public class ClassesServiceImpl implements ClassesService {
 
 	@Override
 	public Map<String, Object> getClassesInfo(HttpServletRequest request, String classid) {
-		//验证管理员权限(系统管理员roleid=1)
+		//班级信息系统管理员和班级管理员权限
 		String roleid = CommonUtils.sesAttr(request, "roleid");
-		if(StringUtils.equals(roleid, "1")){
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
 			return classesMapper.getClassesInfo(classid);
 		}
 		return null;
@@ -68,9 +78,9 @@ public class ClassesServiceImpl implements ClassesService {
 
 	@Override
 	public Map<String, Object> editClassesInfo(HttpServletRequest request, String classid, String cname, String dname) {
-		//验证管理员权限(系统管理员roleid=1)
+		//班级信息系统管理员和班级管理员权限
 		String roleid = CommonUtils.sesAttr(request, "roleid");
-		if(StringUtils.equals(roleid, "1")){
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
 			Map<String,Object> result = new HashMap<>();
 			//后台验证
 			if(StringUtils.isEmpty(classid)){
@@ -93,6 +103,7 @@ public class ClassesServiceImpl implements ClassesService {
 			param.put("departid", departid);
 			doUpdateClassesUsers(param);
 			result.put("msg", "保存成功");
+			logService.addLog("更新", "更新班级信息，学院："+dname+",班级："+cname);
 			return result;
 		}
 		return null;
@@ -109,9 +120,9 @@ public class ClassesServiceImpl implements ClassesService {
 
 	@Override
 	public Map<String, Object> deleteClass(HttpServletRequest request, String classid) {
-		//验证管理员权限(系统管理员roleid=1)
+		//班级信息系统管理员和班级管理员权限
 		String roleid = CommonUtils.sesAttr(request, "roleid");
-		if(StringUtils.equals(roleid, "1")){
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
 			Map<String,Object> result = new HashMap<>();
 			//后台验证
 			if(StringUtils.isEmpty(classid)){
@@ -119,6 +130,7 @@ public class ClassesServiceImpl implements ClassesService {
 				return result;
 			}
 			classesMapper.deleteClass(classid);
+			logService.addLog("删除", "删除班级信息，班级编号为："+classid+"被删除");
 			result.put("msg", "删除成功");
 			return result;
 		}
@@ -127,9 +139,9 @@ public class ClassesServiceImpl implements ClassesService {
 
 	@Override
 	public Map<String, Object> addClasses(HttpServletRequest request, String cname, String dname) {
-		//验证管理员权限(系统管理员roleid=1)
+		//班级信息系统管理员和班级管理员权限
 		String roleid = CommonUtils.sesAttr(request, "roleid");
-		if(StringUtils.equals(roleid, "1")){
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
 			Map<String,Object> result = new HashMap<>();
 			//后台验证
 			if(StringUtils.isEmpty(cname)){
@@ -145,9 +157,11 @@ public class ClassesServiceImpl implements ClassesService {
 			Map<String,Object> param = new HashMap<>();
 			param.put("classid", classid);
 			param.put("cname", cname);
-			param.put("dname", dname);
+			String departid = departService.getDepartidByDname(dname);
+			param.put("departid", departid);
 			classesMapper.addClasses(param);
 			result.put("msg", "添加成功");
+			logService.addLog("添加", "添加班级信息，学院："+dname+",班级："+cname);
 			return result;
 		}
 		return null;
@@ -155,9 +169,9 @@ public class ClassesServiceImpl implements ClassesService {
 
 	@Override
 	public List<Map<String, Object>> queryAllClassesByDname(HttpServletRequest request, String dname) {
-		//验证系统管理员权限(部门管理员roleid=1)
+		//班级信息系统管理员和班级管理员权限
 		String roleid = CommonUtils.sesAttr(request, "roleid");
-		if(StringUtils.equals(roleid, "1")){
+		if(StringUtils.equals(roleid, "1")||StringUtils.equals(roleid, "2")){
 			if(StringUtils.isNoneEmpty(dname)){
 				return classesMapper.queryAllClassesByDname(dname);
 			}

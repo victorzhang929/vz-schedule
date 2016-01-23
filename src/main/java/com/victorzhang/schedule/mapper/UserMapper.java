@@ -3,6 +3,8 @@ package com.victorzhang.schedule.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface UserMapper {
 
 	/**
@@ -69,5 +71,11 @@ public interface UserMapper {
 	 * @param param
 	 */
 	void addUserInfo(Map<String, Object> param);
+
+	/**
+	 * 根据departid查询所有用户
+	 * @return
+	 */
+	List<Map<String, Object>> queryUseridsByDid(@Param(value="departid") String departid);
 
 }

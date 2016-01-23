@@ -27,8 +27,7 @@ function load(pge){
 				+ "<thead><tr>"
 				+ "<th style='width:5%'>编号</th>"
 				+ "<th style='width:25%'>班级名称</th>"
-				+ "<th style='width:25%'>所在学院</th>"
-				+ "<th style='width:10%'>教师人数</th>"
+				+ "<th style='width:30%'>所在学院</th>"
 				+ "<th style='width:25%'>学生人数</th>" 
 				+ "<th style='width:15%'>操作</th>" 
 				+ "</tr></thead>" + "<tbody id='trs'>";
@@ -41,13 +40,12 @@ function load(pge){
 					+ "<td>"+index(res.page,res.pageSize,i)+"</td>"
 					+ "<td title='"+data.cname+"'>" + data.cname + "</td>" 
 					+ "<td title='"+data.dname+"'>" + data.dname + "</td>" 
-					+ "<td title='"+data.teaNum+"'>" + data.teaNum + "</td>"
 					+ "<td title='"+data.stuNum+"'>" + data.stuNum + "</td>"
 					+ "<td>"+ handle(data.classid) +"</td>"
 					+ "</tr>";
 			}
 		} else {
-			mainTable += "<tr><td colspan='6' style='height:40px;font-size:14px;font-size:16px;font-weight: 700;'>暂无数据!</td></tr>";
+			mainTable += "<tr><td colspan='6'>暂无数据!</td></tr>";
 		}
 		
 		mainTable += "</tbody></table>";
@@ -137,7 +135,7 @@ function deleteInfo(classid){
 		okValue:'确定',
 		ok:function(){
 			$.ajax({
-		        url: path+"/depart/deleteClass.do",
+		        url: path+"/classes/deleteClass.do",
 				type : "POST",
 				data : {classid:classid},
 				dataType : "json",
@@ -163,7 +161,7 @@ function deleteInfo(classid){
 function addClassesUI(){
 	$("#msg2").html("");
 	$("#m2cname").val("");
-	queryAllDepartment('querytype');//初始化所有学院名称
+	queryAllDepartment('m2depart');//初始化所有学院名称
 }
 
 /**
@@ -179,7 +177,7 @@ function addClasses(){
 	if(param.dname=="所属学院"){$("#msg2").html("<span class='label label-important'>请选择学院</span>");return false;}
 	
 	$.ajax({
-        url: path+"/depart/addClasses.do",
+        url: path+"/classes/addClasses.do",
 		type : "POST",
 		data : param,
 		dataType : "json",

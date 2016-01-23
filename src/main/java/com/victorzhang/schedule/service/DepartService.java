@@ -66,5 +66,12 @@ public interface DepartService {
 	 * @return
 	 */
 	Map<String, Object> addDepart(HttpServletRequest request, String dname, String dphone, String address, String connperson, String connphone);
+	
+	/**
+	 * 根据学院名称获取学院id
+	 * @param dname
+	 * @return
+	 */
+	String getDepartidByDname(String dname);
 
 }

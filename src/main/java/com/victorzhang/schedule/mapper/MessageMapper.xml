@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.victorzhang.schedule.mapper.MessageMapper">
+
+	<!-- 发布信息（系统管理员，部门管理员不同权限，判断departid是否存在）-->
+	<insert id="addPulishMsg" parameterType="java.util.Map">
+		INSERT INTO message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="msid != null and msid != ''">
+				msid,
+			</if>
+			<if test="ms != null and ms != ''">
+				ms,
+			</if>
+			<if test="reuserid != null and reuserid != ''">
+				reuserid,
+			</if>
+			<if test="seuserid != null and seuserid != ''">
+				seuserid,
+			</if>
+			<if test="seuserdate != null and seuserdate != ''">
+				seuserdate,
+			</if>
+			<if test="seuserip != null and seuserip != ''">
+				seuserip,
+			</if>
+			isread
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="msid != null and msid != ''">
+				#{msid},
+			</if>
+			<if test="ms != null and ms != ''">
+				#{ms},
+			</if>
+			<if test="reuserid != null and reuserid != ''">
+				#{reuserid},
+			</if>
+			<if test="seuserid != null and seuserid != ''">
+				#{seuserid},
+			</if>
+			<if test="seuserdate != null and seuserdate != ''">
+				#{seuserdate},
+			</if>
+			<if test="seuserip != null and seuserip != ''">
+				#{seuserip},
+			</if>
+			'2'
+		</trim>
+	</insert>
+	
+	<!-- 获取当前用户最新消息 -->
+	<select id="getNewestMsg" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT ms FROM message
+		WHERE reuserid = #{reuserid}
+		ORDER BY seuserdate DESC LIMIT 0,1
+	</select>
+	
+	<!-- 获取当前用户前五条未读消息 -->
+	<select id="getUnreadMsg" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT ms,msid FROM message
+		WHERE reuserid = #{reuserid} AND isread='2'
+		ORDER BY seuserdate DESC LIMIT 0,5
+	</select>
+	
+	<!-- 获取当前用户所有未读消息总数 -->
+	<select id="getUnreadMsgNum" resultType="int" parameterType="java.lang.String">
+		SELECT COUNT(msid) FROM message
+		WHERE reuserid = #{reuserid} AND isread='2'
+	</select>
+	
+	<!-- 阅读msid消息 -->
+	<update id="doReadMsg" parameterType="java.util.Map">
+		update message set
+		isread = '1',readdate=#{readdate},readip=#{readdate}
+		where msid = #{msid}
+	</update>
+	
+	<select id="querymsgCount" resultType="int" parameterType="java.util.Map">
+		SELECT COUNT(msid) FROM message m  
+		LEFT JOIN users u 
+		ON m.reuserid = u.userid
+		<where>
+			<if test="reuserid != null and reuserid != ''">
+					and m.reuserid = #{reuserid}
+			</if>
+			<if test="isread != null and isread != ''">
+					and m.isread = #{isread}
+			</if>
+			<if test="departid != null and departid != ''">
+					and u.departid = #{departid}
+			</if>
+			<if test="stadate != null and stadate != ''">
+					and m.seuserdate >= #{stadate}
+			</if>
+			<if test="enddate != null and enddate != ''">
+					and #{enddate} >= m.seuserdate
+			</if>
+		</where>
+	</select>
+	
+	<select id="querymsgpage" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT DATE_FORMAT(m.seuserdate,'%Y-%m-%d %H:%h:%s') AS seuserdate,
+		m.ms,u.realname,m.seuserip FROM message m 
+		LEFT JOIN users u ON
+		m.reuserid = u.userid
+		<where>
+			<if test="reuserid != null and reuserid != ''">
+					and m.reuserid = #{reuserid}
+			</if>
+			<if test="isread != null and isread != ''">
+					and m.isread = #{isread}
+			</if>
+			<if test="departid != null and departid != ''">
+					and u.departid = #{departid}
+			</if>
+			<if test="stadate != null and stadate != ''">
+					and m.seuserdate >= #{stadate}
+			</if>
+			<if test="enddate != null and enddate != ''">
+					and #{enddate} >= m.seuserdate
+			</if>
+		</where>
+		ORDER BY m.seuserdate,m.readdate DESC LIMIT ${begin},${pageSize}
+	</select>
+	
+</mapper>

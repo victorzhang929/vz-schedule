@@ -7,9 +7,6 @@
 <link rel="stylesheet" href="<%=basePath%>css/subiframepage.css" />
 <script type="text/javascript" src="<%=basePath%>js/userInfo.js"></script>
 <title>用户信息</title>
-<style type="text/css">
-	.validateSpan{display:none;}
-</style>
 </head>
 
 <body>
@@ -33,7 +30,7 @@
 								<h5>用户信息</h5>
 							</div>
 							<div class="widget-content nopadding">
-								<form method="get" class="form-horizontal" id="userInfoForm">
+								<form method="post" class="form-horizontal" id="userInfoForm">
 									<div class="control-group">
 										<label class="control-label">用户名 :</label>
 										<div class="controls">

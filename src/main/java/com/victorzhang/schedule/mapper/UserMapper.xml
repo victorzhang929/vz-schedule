@@ -45,7 +45,8 @@
 	<!-- 保存用户信息 -->
 	<update id="doSaveUserInfo" parameterType="java.util.Map">
 		UPDATE users SET
-		username=#{username},realname=#{realname}
+		username=#{username},realname=#{realname},updateuserid=#{updateuserid},
+		updatedate=#{updatedate},updateip=#{updateip}
 		<if test="usermobile != null and usermobile != ''">
 			,usermobile=#{usermobile}
 		</if>
@@ -118,10 +119,13 @@
 	<update id="doUpdateStuTeaInfo" parameterType="java.util.Map">
 		UPDATE users SET 
 		<if test="cname != null and cname != ''">
-			classid = (SELECT classid FROM classes WHERE cname = #{cname})
+			classid = (SELECT classid FROM classes WHERE cname = #{cname}),
 		</if>
 		realname = #{realname},
 		departid = (SELECT departid FROM department WHERE dname = #{dname}),
+		updateuserid = #{updateuserid},
+		updatedate = #{updatedate},
+		updateip = #{updateip}
 		WHERE userid = #{userid}
 	</update>
 	
@@ -173,5 +177,15 @@
 				#{inputip},
 		</trim>
 	</insert>
+	
+	<!-- 根据userid获取学生，教师信息 -->
+	<select id="queryUseridsByDid" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT userid FROM users
+		<where>
+			<if test="departid != null and departid != ''">
+				departid = #{departid}
+			</if>
+		</where>
+	</select>
 	
 </mapper>
